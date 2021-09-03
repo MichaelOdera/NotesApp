@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -15,6 +16,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -93,9 +95,17 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         mSelectImageButton.setOnClickListener(this);
         mSaveNoteButton.setOnClickListener(this);
 
+        setBackArrow();
+
         setAuthStateListener();
 
 
+    }
+
+    private void setBackArrow() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeAsUpIndicator(R.drawable.back_arrow);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private void setAuthStateListener() {
@@ -282,6 +292,20 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
 
     private void dismissProgressDialog() {
         mProgressDialog.dismiss();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            gotToMain();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void gotToMain() {
+        Intent intent = new Intent(CreateNoteActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
