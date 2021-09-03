@@ -1,82 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView
     android:layout_height="match_parent"
-    tools:context=".ui.CreateNoteActivity">
-
-    <LinearLayout
-        android:orientation="vertical"
+    android:background="@color/primary"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent">
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="30dp"
-        android:background="@color/teal_700"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayout">
+        android:background="@color/primary"
+        tools:context=".ui.CreateNoteActivity">
 
-
-        <EditText
-            android:id="@+id/noteTitleDataEditText"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_background"
-            android:hint="Note Title"
-            android:nextFocusDown="@+id/noteBodyDataTextView"
-            android:padding="2dp"
-            android:gravity="top"
-            android:layout_marginBottom="10dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="@color/colorHint"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/noteBodyDataTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_background"
-            android:hint="@string/note_body"
-            android:inputType="textCapSentences|textNoSuggestions|textMultiLine"
-            android:minLines="3"
-            android:maxLines="6"
-            android:gravity="top"
-            android:padding="5dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="@color/colorHint"
-            android:textSize="20sp" />
+            android:padding="30dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/linearLayout">
 
 
-        <Button
-            android:id="@+id/uploadImageButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/pick_image"
-            android:background="@color/black"
-            android:layout_marginTop="15dp"
-            android:textColor="@color/white" />
+            <EditText
+                android:id="@+id/noteTitleDataEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_background"
+                android:hint="Note Title"
+                android:nextFocusDown="@+id/noteBodyDataTextView"
+                android:padding="2dp"
+                android:gravity="top"
+                android:layout_marginBottom="10dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/colorHint"
+                android:textSize="20sp" />
 
-        <ImageView
-            android:id="@+id/toBeUploadedImageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            <EditText
+                android:id="@+id/noteBodyDataTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_background"
+                android:hint="@string/note_body"
+                android:inputType="textCapSentences|textNoSuggestions|textMultiLine"
+                android:minLines="3"
+                android:maxLines="6"
+                android:gravity="top"
+                android:padding="5dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/colorHint"
+                android:textSize="20sp" />
 
 
-        <Button
-            android:id="@+id/saveNoteButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/save_note"
-            android:backgroundTint="@color/black"
-            android:background="@color/black"
-            android:layout_marginTop="15dp"
-            android:textColor="@color/white" />
+            <Button
+                android:id="@+id/uploadImageButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/pick_image"
+                android:background="@color/black"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/toBeUploadedImageView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+
+                />
 
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/saveNoteButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/save_note"
+                android:backgroundTint="@color/black"
+                android:background="@color/black"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/white" />
 
-</RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>

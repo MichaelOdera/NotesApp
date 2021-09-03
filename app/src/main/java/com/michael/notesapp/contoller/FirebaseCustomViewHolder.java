@@ -2,6 +2,8 @@ package com.michael.notesapp.contoller;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,6 +48,8 @@ public class FirebaseCustomViewHolder extends RecyclerView.ViewHolder implements
         String noteTitle = note.getmNoteTitle();
         String noteBody = note.getmNoteBody();
         String noteImageUrl = note.getmImageUrl();
+
+        System.out.println("my image uri "+ noteImageUrl);
 
         mNoteTitleTextView.setText(noteTitle);
         mNoteBodyTextView.setText(noteBody);

@@ -1,11 +1,17 @@
 package com.michael.notesapp.model;
 
+import org.w3c.dom.Node;
+
 import java.util.Objects;
 
 public class Note {
     private String mNoteBody;
     private String mNoteTitle;
     private String mImageUrl;
+
+    public Note(){
+
+    }
 
 
     public Note(String noteTitle, String noteBody, String imageUrl) {

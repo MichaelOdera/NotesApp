@@ -45,14 +45,14 @@ public class NotesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
 
-        FirebaseUser databaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        String userId = databaseUser.getUid();
+
 
         mAuth = FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
+        String userId = mAuth.getCurrentUser().getUid();
 
         mNotesReference = FirebaseDatabase.getInstance().getReference().child(userId).child(Constants.NOTES_REFERENCE);
-
         mRecyclerView = findViewById(R.id.recyclerView);
+
 
         setUpAuthStateListener();
 
@@ -73,6 +73,7 @@ public class NotesActivity extends AppCompatActivity {
     }
 
     private void fetchNoteItems() {
+        System.out.println("Fetching items ");
         FirebaseRecyclerOptions<Note> options = new FirebaseRecyclerOptions.Builder<Note>()
                 .setQuery(mNotesReference, Note.class).build();
 
@@ -99,7 +100,7 @@ public class NotesActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mFirebaseAdapter);
-        mRecyclerView.setHasFixedSize(true);
+
 
         ItemTouchHelper itemTouchHelper = new
                 ItemTouchHelper(new SwipeToDeleteCallback(mFirebaseAdapter));

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -63,19 +64,22 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
 
     private String mUserId;
 
+    private ProgressDialog mProgressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
 
+        mProgressDialog = new ProgressDialog(this);
+
         mStorageReference = FirebaseStorage.getInstance().getReference();
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         mAuth = FirebaseAuth.getInstance(FirebaseApp.initializeApp(this));
-
-        Toast.makeText(CreateNoteActivity.this, "Create note", Toast.LENGTH_SHORT).show();
+        mUserId = mAuth.getCurrentUser().getUid();
 
 
         mSaveNoteButton = findViewById(R.id.saveNoteButton);
@@ -98,10 +102,14 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         mAuthStateListener = new FirebaseAuth.AuthStateListener(){
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null){
                     String userId = user.getUid();
                     mUserId = userId.trim();
+                    Toast.makeText(CreateNoteActivity.this, "User "+mUserId, Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(CreateNoteActivity.this, "User >>> "+mUserId, Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -141,6 +149,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
 
                         mSelectImageButton.setText("Image Selected");
                     } catch (IOException e) {
+                        Toast.makeText(CreateNoteActivity.this, "Error in choosing file", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
 
@@ -156,6 +165,10 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         boolean isValidData = checkIfValidData();
 
         if(isValidData){
+            mProgressDialog.setTitle("Saving note item");
+            mProgressDialog.setMessage("Saving ...");
+            mProgressDialog.show();
+
             uploadImageData();
         }
     }
@@ -172,20 +185,37 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
 
         if(mFilePath != null){
 
-            StorageReference storageReference = mStorageReference
+            StorageReference storageReference = mStorageReference.child(mUserId)
                     .child(Constants.STORAGE_REFERENCE + System.currentTimeMillis()+ GetImageExtension(mFilePath));
+
+
 
             storageReference.putFile(mFilePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                        String imageUrl;
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            dismissProgressDialog();
+                            Toast.makeText(CreateNoteActivity.this, "Successfully Saved", Toast.LENGTH_SHORT).show();
 
                             DatabaseReference databaseReference = mDatabaseReference.child(mUserId).child(Constants.NOTES_REFERENCE);
-                            String imageUrl = taskSnapshot.getStorage().getDownloadUrl().toString();
 
-                            Note noteToSave = new Note(mNoteTitle, mNoteBody, imageUrl);
+                            taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                  //  System.out.println("My uri path +++++++++++++++ >>>>>>> ++++++"+uri.toString());
+                                    imageUrl = uri.toString();
+                                    Note noteToSave = new Note(mNoteTitle, mNoteBody, imageUrl);
 
-                            databaseReference.push().setValue(noteToSave);
+                                    databaseReference.push().setValue(noteToSave);
+                                }
+                            });
+                           // String imageUrl = taskSnapshot.getStorage().getDownloadUrl().toString();
+
+
+
+
 
 
                         }
@@ -193,13 +223,14 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            dismissProgressDialog();
                             Toast.makeText(CreateNoteActivity.this, "Could Not Save Note Item", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-
+                                mProgressDialog.show();
                         }
                     });
         }else{
@@ -230,7 +261,6 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
             mNoteTitleEditText.setError("Title Required");
             result = false;
         }else{
-            mNoteBodyEditText.setError("Note Body Required");
             result = true;
         }
 
@@ -241,12 +271,43 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
     private boolean isValidBody(String mNoteBody) {
         boolean result;
         if(mNoteBody.equals("")){
+            mNoteBodyEditText.setError("Note Body Required");
             result = false;
         }else{
             result = true;
         }
 
         return result;
+    }
+
+    private void dismissProgressDialog() {
+        mProgressDialog.dismiss();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        dismissProgressDialog();
+        if(mAuthStateListener != null)
+            mAuth.removeAuthStateListener(mAuthStateListener);
+    }
+
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        dismissProgressDialog();
+        if(mAuthStateListener != null)
+            mAuth.removeAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissProgressDialog();
+        if(mAuthStateListener != null)
+            mAuth.removeAuthStateListener(mAuthStateListener);
     }
 
 
