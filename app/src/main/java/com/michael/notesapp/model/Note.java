@@ -1,8 +1,11 @@
 package com.michael.notesapp.model;
 
+import org.parceler.Parcel;
 import org.w3c.dom.Node;
 
 import java.util.Objects;
+
+@Parcel
 
 public class Note {
     private String mNoteBody;

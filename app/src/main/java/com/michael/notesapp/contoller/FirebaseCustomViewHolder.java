@@ -73,10 +73,17 @@ public class FirebaseCustomViewHolder extends RecyclerView.ViewHolder implements
                 }
 
                 int itemPosition = getLayoutPosition();
-                String saved = "saved";
+                dataSnapshot.getKey();
+
+
+
+
+
+                String key = dataSnapshot.getChildren().iterator().next().getKey();
+
                 Intent intent = new Intent(mContext, NoteEditActivity.class);
-                intent.putExtra("position", itemPosition + "");
-                intent.putExtra("saved", saved);
+                intent.putExtra("position", itemPosition);
+                intent.putExtra("key", key);
                 intent.putExtra("notes", Parcels.wrap(notes));
 
                 mContext.startActivity(intent);

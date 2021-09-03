@@ -117,9 +117,10 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                 if(user != null){
                     String userId = user.getUid();
                     mUserId = userId.trim();
-                    Toast.makeText(CreateNoteActivity.this, "User "+mUserId, Toast.LENGTH_SHORT).show();
+
+                    //Toast.makeText(CreateNoteActivity.this, "User "+mUserId, Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(CreateNoteActivity.this, "User >>> "+mUserId, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(CreateNoteActivity.this, "User  "+mUserId, Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -214,19 +215,12 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                             taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-                                  //  System.out.println("My uri path +++++++++++++++ >>>>>>> ++++++"+uri.toString());
                                     imageUrl = uri.toString();
                                     Note noteToSave = new Note(mNoteTitle, mNoteBody, imageUrl);
 
                                     databaseReference.push().setValue(noteToSave);
                                 }
                             });
-                           // String imageUrl = taskSnapshot.getStorage().getDownloadUrl().toString();
-
-
-
-
-
 
                         }
                     })
