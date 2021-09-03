@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">NotesApp</string>
+    <string name="already_have_an_account_log_in_here">Already Registered? Sign In</string>
+    <string name="not_yet_registered_click_to_register">Not yet registered? Click To Register</string>
+    <string name="note_title">note title</string>
+    <string name="note_body">note body</string>
+    <string name="logout">Logout</string>
+    <string name="save_note">Save Note</string>
+    <string name="pick_image">Pick image</string>
+    <string name="view_notes">View Notes</string>
+    <string name="create_note">Create Note</string>
+</resources>
